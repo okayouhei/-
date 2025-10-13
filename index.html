@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VST AIカード 体験デモ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content container">
+      <p class="tag">AI×名刺</p>
+      <h1>「VST AIカード」に似た、デジタル名刺体験</h1>
+      <p class="lead">
+        高級感のあるホログラフィック演出とAIによるパーソナライズを再現したデモアプリです。
+        かざす、話す、繋がる――すべてをワンクリックで。
+      </p>
+      <button class="cta" data-scroll="#card">デモを体験する</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card-section" id="card">
+      <div class="container">
+        <div class="card-wrapper">
+          <div class="ai-card" id="aiCard">
+            <div class="ai-card__side ai-card__side--front">
+              <div class="ai-card__glow"></div>
+              <div class="ai-card__brand">VST AI</div>
+              <div class="ai-card__avatar">
+                <img src="https://avatars.dicebear.com/api/avataaars/vst-ai.svg" alt="AI concierge" loading="lazy" />
+              </div>
+              <div>
+                <h2 class="ai-card__name">Nao Takahashi</h2>
+                <p class="ai-card__role">AIコンシェルジュ / Night Guide</p>
+              </div>
+              <div class="ai-card__chips">
+                <span>多言語対応</span>
+                <span>24/7</span>
+                <span>即時レコメンド</span>
+              </div>
+              <button class="ai-card__button" data-action="flip">AIプロフィールを見る</button>
+            </div>
+            <div class="ai-card__side ai-card__side--back">
+              <h3>AIができること</h3>
+              <ul class="ai-card__list">
+                <li>来訪者の好みからおすすめ店舗を即時レコメンド</li>
+                <li>安全対策や料金の不安をリアルタイムで解消</li>
+                <li>会話ログを整理し次回提案に活かす</li>
+              </ul>
+              <div class="ai-card__contact">
+                <button class="ghost" data-action="chat">AIとチャット</button>
+                <button class="ghost" data-action="share">カードを共有</button>
+              </div>
+              <button class="ai-card__button" data-action="flip">表面に戻る</button>
+            </div>
+          </div>
+          <div class="card-panel">
+            <h2>デジタル名刺のハイライト</h2>
+            <ul class="card-panel__list">
+              <li><strong>タップで切替</strong>：AIのスキルや実績を即座に確認できます。</li>
+              <li><strong>NFC/QR連携</strong>：読み取りでチャットに直接アクセス。</li>
+              <li><strong>リアルタイム更新</strong>：スタッフの最新シフトを自動で同期。</li>
+            </ul>
+            <div class="card-panel__toggles">
+              <label class="toggle">
+                <input type="checkbox" id="glowToggle" checked />
+                <span>ホログラム演出を有効にする</span>
+              </label>
+              <label class="toggle">
+                <input type="checkbox" id="autoReplyToggle" checked />
+                <span>AI自動返信をシミュレート</span>
+              </label>
+            </div>
+            <div class="card-panel__terminal" id="terminal" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scenario" id="scenario">
+      <div class="container">
+        <h2>シナリオ別の活用フロー</h2>
+        <div class="scenario__grid">
+          <article class="scenario__card">
+            <h3>案内所での対面接客</h3>
+            <p>カードを読み取るだけで、来訪者のニーズをヒアリングしながらAIが候補店舗を提示します。</p>
+          </article>
+          <article class="scenario__card">
+            <h3>ホテル・飲食店との提携</h3>
+            <p>提携先がカードを共有すれば、LINE公式アカウントに直接誘導され深夜帯でも迷いません。</p>
+          </article>
+          <article class="scenario__card">
+            <h3>イベント・キャンペーン対応</h3>
+            <p>リアルタイムでクーポンや混雑状況を更新し、ユーザーごとに最適な通知を配信します。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+      <div class="container">
+        <div class="cta-section__content">
+          <h2>自社向けAI名刺を作成しませんか？</h2>
+          <p>必要事項を入力すると、PoC構築プランと見積りをAIが生成します。</p>
+          <form class="cta-form" id="estimateForm">
+            <label>
+              担当者名
+              <input type="text" name="name" placeholder="山田 太郎" required />
+            </label>
+            <label>
+              業態カテゴリ
+              <select name="industry" required>
+                <option value="">選択してください</option>
+                <option>キャバクラ</option>
+                <option>クラブ</option>
+                <option>ガールズバー</option>
+                <option>ホストクラブ</option>
+                <option>その他</option>
+              </select>
+            </label>
+            <label>
+              実装したい機能
+              <textarea name="features" rows="3" placeholder="例：LINE連携、自動レコメンド、顧客カルテ"></textarea>
+            </label>
+            <button type="submit" class="cta">AIでプランを生成</button>
+          </form>
+          <div class="cta-section__result" id="estimateResult" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© 2024 VST AI Card Demo. All rights reserved.</p>
+      <nav class="footer__nav">
+        <a href="#card">デモ</a>
+        <a href="#scenario">活用例</a>
+        <a href="#contact">PoC相談</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
