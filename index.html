@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI名刺カードジェネレーター</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand__logo">AI Card Lab</span>
+        <span class="brand__tagline">あなた専用のAI名刺を数分で</span>
+      </div>
+      <nav class="header-actions">
+        <a class="header-link" href="#templates">テンプレート</a>
+        <a class="header-link" href="#features">機能</a>
+        <a class="header-link" href="#pricing">導入プラン</a>
+        <a class="primary-button" href="#builder">今すぐ作る</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="builder">
+        <div class="hero__content">
+          <h1>VST AIカード風のAI名刺カードを簡単作成</h1>
+          <p>
+            入力フォームに情報を打ち込むだけで、AIがあなたのプロフィールや提供価値を自動で整理。
+            リアルタイムプレビューで、デザインとコピーを確認しながら名刺を完成させましょう。
+          </p>
+          <div class="hero__cta-group">
+            <button id="generateBtn" class="primary-button">AIでコピー提案</button>
+            <button id="downloadBtn" class="secondary-button">カードをダウンロード</button>
+          </div>
+          <small class="hero__notice"
+            >※ ブラウザ上で完結。個人情報はサーバーに送信されません。</small
+          >
+        </div>
+        <div class="hero__preview">
+          <div class="card-preview" id="cardPreview">
+            <div class="card-preview__header">
+              <div class="avatar" id="avatarInitials">AI</div>
+              <div>
+                <h2 id="previewName">山田 太郎</h2>
+                <p id="previewTitle">AIビジネスデザイナー / AI Card Lab</p>
+              </div>
+            </div>
+            <p class="card-preview__summary" id="previewSummary">
+              生成AIを活用した顧客体験設計が得意。LINEとWebを連携し、店舗集客を自動化します。
+            </p>
+            <div class="card-preview__chips" id="previewChips">
+              <span>AIコンサル</span><span>LINE連携</span><span>自動化</span>
+            </div>
+            <div class="card-preview__footer">
+              <div>
+                <span class="card-icon">📞</span>
+                <span id="previewPhone">090-1234-5678</span>
+              </div>
+              <div>
+                <span class="card-icon">✉️</span>
+                <span id="previewEmail">hello@example.com</span>
+              </div>
+              <div>
+                <span class="card-icon">🔗</span>
+                <span id="previewWebsite">https://ai-card-lab.jp</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-controls">
+            <label class="control">
+              <span>ブランドカラー</span>
+              <input type="color" id="primaryColor" value="#3f37c9" />
+            </label>
+            <label class="control">
+              <span>背景カラー</span>
+              <input type="color" id="backgroundColor" value="#f5f6fb" />
+            </label>
+            <label class="control">
+              <span>フォント</span>
+              <select id="fontFamily">
+                <option value="'Inter', 'Noto Sans JP', sans-serif">モダン</option>
+                <option value="'Noto Sans JP', sans-serif">Noto Sans</option>
+                <option value="'Inter', sans-serif">Inter</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="builder-panel">
+        <h2>プロフィール入力</h2>
+        <form class="builder-form" id="cardForm">
+          <div class="form-group">
+            <label for="name">氏名</label>
+            <input type="text" id="name" placeholder="例: 山田 太郎" value="山田 太郎" />
+          </div>
+          <div class="form-group">
+            <label for="title">肩書・役割</label>
+            <input
+              type="text"
+              id="title"
+              placeholder="例: AIビジネスデザイナー / AI Card Lab"
+              value="AIビジネスデザイナー / AI Card Lab"
+            />
+          </div>
+          <div class="form-group">
+            <label for="summary">一言プロフィール（140文字以内推奨）</label>
+            <textarea
+              id="summary"
+              rows="3"
+              placeholder="強みや提供できる価値を記入"
+            >生成AIを活用した顧客体験設計が得意。LINEとWebを連携し、店舗集客を自動化します。</textarea>
+          </div>
+          <div class="form-group">
+            <label for="expertise">タグ（カンマ区切り）</label>
+            <input
+              type="text"
+              id="expertise"
+              placeholder="例: AIコンサル, LINE連携, 自動化"
+              value="AIコンサル, LINE連携, 自動化"
+            />
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="phone">電話番号</label>
+              <input type="text" id="phone" placeholder="例: 090-1234-5678" value="090-1234-5678" />
+            </div>
+            <div class="form-group">
+              <label for="email">メール</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="例: hello@example.com"
+                value="hello@example.com"
+              />
+            </div>
+            <div class="form-group">
+              <label for="website">Web / SNS</label>
+              <input
+                type="text"
+                id="website"
+                placeholder="例: https://ai-card-lab.jp"
+                value="https://ai-card-lab.jp"
+              />
+            </div>
+            <div class="form-group">
+              <label for="avatar">アイコン用イニシャル（2文字程度）</label>
+              <input type="text" id="avatar" placeholder="例: TY" value="YT" />
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="templates" id="templates">
+        <h2>テンプレートバリエーション</h2>
+        <p>
+          ブランドカラーと背景色を変えるだけで雰囲気が大きく変わります。業界・ターゲット別に3つのプリセットをご用意しました。
+        </p>
+        <div class="template-grid">
+          <button class="template-card" data-primary="#4361ee" data-background="#edf2ff">
+            <span>スタートアップ</span>
+            <small>クリーンで信頼性の高い印象</small>
+          </button>
+          <button class="template-card" data-primary="#ff6f61" data-background="#fff2f0">
+            <span>クリエイティブ</span>
+            <small>カラフルで柔らかな表現</small>
+          </button>
+          <button class="template-card" data-primary="#0ead69" data-background="#e7fff4">
+            <span>コンサルティング</span>
+            <small>落ち着いたプロフェッショナル感</small>
+          </button>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <h2>主な機能</h2>
+        <div class="feature-grid">
+          <article class="feature">
+            <h3>AIコピー提案</h3>
+            <p>
+              入力したキーワードをもとに、生成AIがプロフィール文を提案。クリック一つでプレビューへ反映できます。
+            </p>
+          </article>
+          <article class="feature">
+            <h3>即時プレビュー</h3>
+            <p>
+              リアルタイムにレイアウトを確認しながら、テキストやカラーを微調整。紙の名刺では実現できないダイナミックな表現が可能です。
+            </p>
+          </article>
+          <article class="feature">
+            <h3>PNG書き出し対応</h3>
+            <p>
+              html2canvasを用いてカードをPNGに書き出し。SNSやLINEのプロフィール、デジタル名刺として即活用できます。
+            </p>
+          </article>
+          <article class="feature">
+            <h3>販売用マルチブランド対応</h3>
+            <p>
+              複数テンプレートのプリセットとカラーコード保存機能で、クライアント別のカスタマイズ販売もスムーズです。
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="pricing" id="pricing">
+        <h2>導入プラン例</h2>
+        <div class="pricing-grid">
+          <article class="pricing-card">
+            <h3>フリープラン</h3>
+            <p class="price">¥0</p>
+            <ul>
+              <li>基本テンプレート3種</li>
+              <li>PNGダウンロード</li>
+              <li>ローカル保存</li>
+            </ul>
+            <button class="secondary-button">使ってみる</button>
+          </article>
+          <article class="pricing-card pricing-card--highlight">
+            <h3>プロプラン</h3>
+            <p class="price">¥2,980/月</p>
+            <ul>
+              <li>AIコピー自動生成</li>
+              <li>テンプレート無制限</li>
+              <li>ブランド管理・履歴機能</li>
+            </ul>
+            <button class="primary-button">導入相談</button>
+          </article>
+          <article class="pricing-card">
+            <h3>代理店プラン</h3>
+            <p class="price">¥29,800/月</p>
+            <ul>
+              <li>販売用ホワイトラベル</li>
+              <li>管理者ダッシュボード</li>
+              <li>サポート・素材提供</li>
+            </ul>
+            <button class="secondary-button">資料請求</button>
+          </article>
+        </div>
+      </section>
+
+      <section class="workflow">
+        <h2>販売フローのイメージ</h2>
+        <ol>
+          <li>ヒアリング内容をフォームに入力</li>
+          <li>AIコピー提案を活用し、30秒で初稿作成</li>
+          <li>カラーとフォントを調整しプレビュー確認</li>
+          <li>PNGで納品、またはPDFへ変換し顧客に納品</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>© 2024 AI Card Lab. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
