@@ -39,7 +39,9 @@ InstagramビジネスアカウントをMetaログイン（OAuth）で連携し�
    npm start
    ```
 
-5. ブラウザで `http://localhost:3000` を開き、「Instagramと連携する」を押します。
+   Windowsでコマンド操作に慣れていない場合は、`start-windows.bat` をダブルクリックして起動できます。macOS / Linuxでは `./start-mac-linux.sh` を実行できます。
+
+5. 起動したターミナルを閉じずに、ブラウザのアドレスバーへ `http://localhost:3000` を入力し、「Instagramと連携する」を押します。
 
 > **注意**: `http://localhost:3000/auth/instagram/callback` は、Metaの認可が終わった後にアプリへ戻るためのURLです。Google検索やブラウザに直接貼り付けて開始するURLではありません。連携開始は必ず `http://localhost:3000` または `/auth/instagram` から行ってください。
 
@@ -70,3 +72,19 @@ InstagramビジネスアカウントをMetaログイン（OAuth）で連携し�
 - HTTPSのリダイレクトURIを使い、Cookieには `Secure` 属性を付与してください。
 - 必要なInstagram API権限はMetaのアプリレビューを通過してから本番利用してください。
 - 取得したDMやプロフィール情報を扱う場合は、利用目的・保存期間・削除方法をプライバシーポリシーに明記してください。
+
+
+## よくあるトラブル
+
+### `localhost で接続が拒否されました` / `ERR_CONNECTION_REFUSED` と表示される
+
+これはアプリが起動していない、または別のポートで起動しているときに出るブラウザのエラーです。Google検索やInstagram側の問題ではありません。
+
+1. 先にターミナルで `npm start` を実行します。Windowsの場合は `start-windows.bat` をダブルクリックしても起動できます。
+2. ターミナルに `Instagram連携アプリ: http://localhost:3000` と表示されたままにします。ターミナルを閉じるとサーバーも止まります。
+3. その状態でブラウザのアドレスバーに `http://localhost:3000` を入力します。
+4. まだ接続できない場合は、別のアプリが3000番ポートを使っている可能性があるため、`PORT=3001 npm start` のように別ポートで起動し、`http://localhost:3001` を開いてください。
+
+### `INSTAGRAM_APP_ID と INSTAGRAM_APP_SECRET を設定してください` と表示される
+
+アプリ自体は起動できていますが、Metaアプリの認証情報が未設定です。Meta for DevelopersでアプリIDとアプリシークレットを確認し、環境変数 `INSTAGRAM_APP_ID` と `INSTAGRAM_APP_SECRET` に設定してから再起動してください。
