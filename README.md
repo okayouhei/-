@@ -41,6 +41,8 @@ InstagramビジネスアカウントをMetaログイン（OAuth）で連携し�
 
 5. ブラウザで `http://localhost:3000` を開き、「Instagramと連携する」を押します。
 
+> **注意**: `http://localhost:3000/auth/instagram/callback` は、Metaの認可が終わった後にアプリへ戻るためのURLです。Google検索やブラウザに直接貼り付けて開始するURLではありません。連携開始は必ず `http://localhost:3000` または `/auth/instagram` から行ってください。
+
 ## 環境変数
 
 | 変数名 | 必須 | 初期値 | 説明 |

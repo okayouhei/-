@@ -21,6 +21,11 @@ function sendRedirect(res, location) {
   res.end();
 }
 
+function sendHtml(res, status, html) {
+  res.writeHead(status, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' });
+  res.end(html);
+}
+
 function getCookie(req, name) {
   const cookies = req.headers.cookie || '';
   return cookies.split(';').map((cookie) => cookie.trim()).find((cookie) => cookie.startsWith(`${name}=`))?.split('=')[1];
@@ -89,6 +94,19 @@ async function route(req, res) {
   }
 
   if (url.pathname === '/auth/instagram/callback') {
+    if (!url.search) {
+      sendHtml(res, 200, `<!doctype html>
+<html lang="ja">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Instagram連携の開始方法</title></head>
+<body style="font-family: system-ui, sans-serif; line-height: 1.8; max-width: 720px; margin: 48px auto; padding: 0 20px;">
+  <h1>ここは連携後に戻ってくるURLです</h1>
+  <p><code>/auth/instagram/callback</code> はGoogle検索やブラウザへ直接貼り付けて開くURLではありません。</p>
+  <p>Instagram連携はトップページ、または下のボタンから開始してください。Metaの認可画面で許可すると、このURLへ自動で戻ってきます。</p>
+  <p><a href="/" style="display: inline-block; padding: 12px 18px; border-radius: 999px; background: #c13584; color: white; text-decoration: none; font-weight: 700;">トップページから連携を始める</a></p>
+</body>
+</html>`);
+      return;
+    }
     const state = url.searchParams.get('state');
     const code = url.searchParams.get('code');
     if (!state || state !== getCookie(req, 'ig_oauth_state') || !sessions.has(state)) {
