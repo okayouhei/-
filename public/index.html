@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Instagramアカウント連携アプリ</title>
+  <style>
+    body { margin: 0; font-family: system-ui, sans-serif; background: #faf7ff; color: #1f1b2d; }
+    main { max-width: 880px; margin: 0 auto; padding: 56px 20px; }
+    .card { background: white; border-radius: 24px; padding: 32px; box-shadow: 0 20px 60px rgba(66, 43, 101, .14); }
+    .badge { color: #c13584; font-weight: 700; letter-spacing: .08em; }
+    h1 { font-size: clamp(2rem, 5vw, 4rem); margin: 12px 0; }
+    p { line-height: 1.8; color: #4c465d; }
+    a.button { display: inline-block; margin-top: 20px; padding: 14px 22px; border-radius: 999px; color: white; background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); text-decoration: none; font-weight: 700; }
+    code { background: #f1edf7; border-radius: 6px; padding: 2px 6px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 28px; }
+    .step { border: 1px solid #eee7f8; border-radius: 16px; padding: 18px; }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="card">
+      <div class="badge">INSTAGRAM OAUTH</div>
+      <h1>Instagramアカウント連携</h1>
+      <p>Metaログインを使ってInstagramビジネスアカウントを連携し、連携済みページとInstagramユーザー名を取得するシンプルなアプリです。</p>
+      <a class="button" href="/auth/instagram">Instagramと連携する</a>
+      <div class="grid">
+        <div class="step"><strong>1. Metaアプリを作成</strong><p>Meta for Developersでアプリを作成し、OAuthリダイレクトURIを登録します。</p></div>
+        <div class="step"><strong>2. 環境変数を設定</strong><p><code>INSTAGRAM_APP_ID</code> と <code>INSTAGRAM_APP_SECRET</code> を設定します。</p></div>
+        <div class="step"><strong>3. 連携開始</strong><p>ボタンから認可し、コールバックで連携アカウント情報を確認します。</p></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
