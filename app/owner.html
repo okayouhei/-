@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>オーナー用 集客ツール</title><link rel="stylesheet" href="style.css">
+<script src="config.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script></head>
+<body><div class="wrap"><h1 style="margin-top:20px">📈 オーナー用 集客ツール</h1>
+<div class="tabs" id="tabs"></div>
+
+<section data-tab="リンク＆QR">
+<p class="notice">配る場所ごとに別リンクを作ると「どこから来たか」が分かり、効く施策だけに予算を寄せられます。</p>
+<label>公開ページURL</label><input id="base" placeholder="https://example.com/app/index.html">
+<label>配布場所</label><select id="srcSel"></select>
+<div id="linkOut" class="card"></div><div id="qr" style="background:#fff;display:inline-block;padding:10px;border-radius:8px"></div>
+<p class="notice">QRは右クリック/長押しで保存→名刺・チラシ・ポップ・LINEのリッチメニューへ。</p>
+</section>
+
+<section data-tab="投稿文メーカー">
+<label>用途</label><select id="tplSel"></select>
+<label>追記（任意）</label><input id="extra" placeholder="例：今週金曜はシャンパンコール割引">
+<pre id="tplOut"></pre><button class="btn pink" id="copy">コピーする</button>
+</section>
+
+<section data-tab="今日の更新">
+<p class="notice">下を入力すると、お客様ページ用の config.js 記述を生成します。毎日の更新に。</p>
+<label>今日のイベント</label><input id="ev"><label>出勤キャスト（カンマ区切り）</label><input id="cs">
+<pre id="cfgOut"></pre><button class="btn pink" id="copyCfg">コピー</button>
+</section>
+
+<section data-tab="収支シミュレーター">
+<div class="grid"><div><label>月の固定費（家賃・人件費など）</label><input id="fix" type="number"></div>
+<div><label>客単価（円）</label><input id="avg" type="number"></div>
+<div><label>1人あたり原価（円）</label><input id="cost" type="number"></div>
+<div><label>現在の月間来店人数</label><input id="cur" type="number" value="300"></div>
+<div><label>新規の再来率（％）</label><input id="rep" type="number" value="25"></div>
+<div><label>新規1人の獲得コスト（円）</label><input id="cac" type="number" value="1500"></div></div>
+<div class="card"><div>損益分岐の来店人数：<span class="big" id="be"></span> 人/月</div>
+<div>現在の月間損益：<span class="big" id="pl"></span></div>
+<div>赤字解消に必要な追加来店：<span class="big" id="gap"></span> 人</div>
+<div class="notice" id="ltv"></div></div>
+</section>
+
+<section data-tab="来訪ログ(この端末)">
+<p class="notice">※この端末で開かれた回数のみ。全体の効果はLINE/Instagramの分析とスタッフの「何で知った？」聞き取りで補ってください。</p>
+<div id="logOut" class="card"></div><button class="btn ghost" id="clr">ログを消す</button>
+</section>
+
+<section data-tab="30日集客プラン">
+<div class="card"><b>第1週：土台</b><br>□LINE公式・Instagram・Googleマップ(MEO)の情報を最新に □初回クーポンページ公開 □QR入り名刺を全員に配布</div>
+<div class="card"><b>第2週：近隣連携</b><br>□周辺の飲食店・ホテル・タクシー・美容室にカード設置依頼(紹介特典を用意) □キャストが出勤日をストーリーで毎日発信</div>
+<div class="card"><b>第3週：広告</b><br>□Meta広告：半径2〜3km・20〜40代男性・20時〜0時・遷移先LINE（日予算1,000〜3,000円） □Googleマップの口コミ依頼(コスパ・安心感を書いてもらう)</div>
+<div class="card"><b>第4週：リピート</b><br>□初回客へ翌日お礼LINE+「次回使える割引」 □3週間来ない方へ再来LINE □紹介（連れてきた方・来た方の両方に1杯無料）</div>
+<div class="card"><b>鉄則</b><br>・料金を先に見せる（不安が最大の来店障壁）<br>・20歳未満NG・強引な客引きや誇大表現はしない（条例違反・評判悪化）<br>・数字は毎週1回、来店数／LINE追加数／新規の流入元を確認</div>
+</section>
+</div>
+<script>
+const S=window.SHOP,$=id=>document.getElementById(id);
+// タブ
+const secs=[...document.querySelectorAll("section")];
+$("tabs").innerHTML=secs.map((s,i)=>`<button data-i="${i}">${s.dataset.tab}</button>`).join("");
+function show(i){secs.forEach((s,j)=>s.hidden=i!==j);[...$("tabs").children].forEach((b,j)=>b.classList.toggle("on",i===j));if(i===4)renderLog()}
+$("tabs").onclick=e=>{if(e.target.dataset.i)show(+e.target.dataset.i)};show(0);
+// リンク
+const SRC=[["insta_story","Instagramストーリー"],["insta_bio","Instagramプロフィール"],["line_menu","LINEリッチメニュー"],["card","名刺・チラシ"],["poster","店頭ポスター/ポップ"],["taxi","タクシー・ホテル連携"],["map","Googleマップ"],["ad_meta","Meta広告"],["tiktok","TikTok"],["x","X(Twitter)"]];
+$("srcSel").innerHTML=SRC.map(([v,l])=>`<option value="${v}">${l}</option>`).join("");
+$("base").value=S.siteUrl||location.href.replace("owner.html","index.html").split("?")[0];
+let qr;function link(){const u=new URL($("base").value,location.href);u.searchParams.set("src",$("srcSel").value);return u.toString()}
+function drawLink(){const l=link();$("linkOut").textContent=l;$("qr").innerHTML="";if(window.QRCode)qr=new QRCode($("qr"),{text:l,width:180,height:180})}
+$("base").oninput=$("srcSel").onchange=drawLink;drawLink();
+// 投稿文
+const T={
+ "Instagramストーリー":()=>`🌙 ${S.area}｜${S.name}\n初めての方限定👇\n${S.coupon.title}（飲み放題）\n✔明朗会計 ✔おひとり様OK ✔追加料金なし\n今日の出勤：${S.today.cast.join("・")}\nLINEで「初めて」と送ってね📩\n#${S.area.split(" ")[0]} #ガールズバー #初来店歓迎 #明朗会計`,
+ "Instagram投稿":()=>`【初めての方へ】\n「ガールズバーって高そう…」\nそんな不安をなくすため、料金を全部公開します。\n\n${S.prices.map(p=>"・"+p.label+" "+p.price).join("\n")}\n${S.priceNote}\n\n初回は${S.coupon.title}。プロフィールのLINEから「初めて」と送ってください🙌\n※${S.minAge}歳未満の方はご入店いただけません`,
+ "LINE一斉配信":()=>`【本日のご案内】\n${S.today.event}\n出勤：${S.today.cast.join("・")}\n\n本日のご来店でご利用いただけるクーポンはこちら👇\n${S.coupon.title}\nこのメッセージを会計時にご提示ください。\n営業 ${S.hours}`,
+ "初回お礼LINE(翌日)":()=>`昨日はご来店ありがとうございました！\n楽しんでいただけましたか？\n次回ご来店で使えるお得なクーポンを送りますね🎁\n「ご来店から14日以内に1杯サービス」\n\nまたお会いできるのを楽しみにしています。`,
+ "再来促進LINE(3週間後)":()=>`お久しぶりです！\n${S.name}です。最近お会いできていなくて寂しいです🥺\n今週ご来店いただけたら、ウェルカムドリンク1杯プレゼント。\n返信いただければお席をお取りします。`,
+ "Googleマップ口コミ依頼":()=>`本日はありがとうございました！\nよろしければGoogleマップに口コミをお願いします。\n「料金が分かりやすかった」「初めてでも安心だった」など、感じたことをそのままで大丈夫です🙏\n（書いていただいた方に次回1杯サービス）`
+};
+$("tplSel").innerHTML=Object.keys(T).map(k=>`<option>${k}</option>`).join("");
+function tpl(){$("tplOut").textContent=T[$("tplSel").value]()+($("extra").value?"\n\n"+$("extra").value:"")}
+$("tplSel").onchange=$("extra").oninput=tpl;tpl();
+const cp=t=>navigator.clipboard.writeText(t).then(()=>alert("コピーしました"));
+$("copy").onclick=()=>cp($("tplOut").textContent);
+// 今日の更新
+$("ev").value=S.today.event;$("cs").value=S.today.cast.join(",");
+function cfg(){$("cfgOut").textContent=`today: { event: ${JSON.stringify($("ev").value)}, cast: ${JSON.stringify($("cs").value.split(/[,、]/).map(s=>s.trim()).filter(Boolean))} },`}
+$("ev").oninput=$("cs").oninput=cfg;cfg();$("copyCfg").onclick=()=>cp($("cfgOut").textContent);
+// 収支
+$("fix").value=S.fixedCostMonthly;$("avg").value=S.avgSpend;$("cost").value=S.costPerGuest;
+function pl(){const f=+$("fix").value,a=+$("avg").value,c=+$("cost").value,cur=+$("cur").value,r=+$("rep").value/100,cac=+$("cac").value;
+ const m=a-c;if(m<=0){$("be").textContent="—";return}
+ const be=Math.ceil(f/m),p=cur*m-f,gap=Math.max(0,be-cur);
+ $("be").textContent=be.toLocaleString();$("pl").textContent=(p>=0?"+":"")+p.toLocaleString()+"円";$("pl").className="big "+(p>=0?"ok":"ng");$("gap").textContent=gap.toLocaleString();
+ const visits=1/(1-Math.min(r,.9));$("ltv").textContent=`新規1人の想定来店回数≒${visits.toFixed(1)}回 → 粗利≒${Math.round(m*visits).toLocaleString()}円。獲得コスト${cac.toLocaleString()}円なら ${(m*visits/cac).toFixed(1)}倍の回収。`}
+document.querySelectorAll("#fix,#avg,#cost,#cur,#rep,#cac").forEach(e=>e.oninput=pl);pl();
+// ログ
+function renderLog(){const ev=JSON.parse(localStorage.getItem("gb_events")||"[]"),by={};
+ ev.forEach(e=>{(by[e.src]=by[e.src]||{visit:0,line_click:0,coupon_used:0});if(by[e.src][e.type]!==undefined)by[e.src][e.type]++});
+ const rows=Object.entries(by).map(([k,v])=>`<div class="row"><b>${k}</b><span>閲覧${v.visit} / LINE${v.line_click} / 利用${v.coupon_used}</span></div>`).join("");
+ $("logOut").innerHTML=rows||"データなし"}
+$("clr").onclick=()=>{if(confirm("消しますか？")){localStorage.removeItem("gb_events");renderLog()}};
+</script></body></html>

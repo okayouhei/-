@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>初めての方へ｜ガールズバー</title><link rel="stylesheet" href="style.css">
+<script src="config.js"></script><script src="track.js"></script></head>
+<body><div class="wrap">
+<section class="hero"><span class="badge" id="area"></span><h1 id="name"></h1><p>初めてでも安心。明朗会計のガールズバー</p><p class="notice" id="hours"></p></section>
+
+<div class="card coupon" id="coupon"><div class="notice">🎁 ご新規様限定クーポン</div><div class="t" id="cTitle"></div><div id="cDetail" class="notice"></div><div class="clock" id="clock"></div>
+<button class="btn pink" id="useBtn">スタッフに見せる（会計時）</button><div class="notice">※1人1回／スクリーンショット不可・当日の画面のみ有効</div></div>
+
+<h2>はじめての方が選ばれる理由</h2><div class="card tags" id="perks"></div>
+
+<h2>今日の営業</h2><div class="card"><div id="event"></div><div class="tags" id="cast" style="margin-top:8px"></div></div>
+
+<h2>料金（明朗会計）</h2><div class="card" id="prices"></div><p class="notice" id="priceNote"></p>
+
+<h2>ご来店までの流れ</h2><div class="card">①LINEで「初めて」と送る → ②席の空き状況を返信 → ③ご来店・クーポン提示 → ④お会計（追加請求なし）<br><span class="notice">予約なしでもOK。ご予約の方を優先ご案内します。</span></div>
+
+<h2>よくある質問</h2>
+<details><summary>1人でも入れますか？</summary>おひとり様が大半です。女性のお客様も歓迎です。</details>
+<details><summary>ぼったくりが心配です</summary>料金は上記の通りです。入店前にLINEで総額の目安をご案内し、会計は明細をお見せします。</details>
+<details><summary>無理にお酒を勧められませんか？</summary>ノンアルコールもご用意。無理なご注文・飲酒の強要は致しません。</details>
+<details><summary>身分証は必要ですか？</summary><span id="age"></span></details>
+
+<h2>アクセス</h2><div class="card"><div id="addr"></div><a class="btn ghost" id="map" target="_blank" rel="noopener">地図を開く</a><a class="btn ghost" id="tel">電話する</a></div>
+<p class="notice" id="legal"></p>
+</div>
+<div class="sticky"><div class="in"><a class="btn line" id="line" target="_blank" rel="noopener">LINEで聞く・予約</a><a class="btn ghost" id="ig" target="_blank" rel="noopener" style="max-width:130px">Instagram</a></div></div>
+<script>
+const S=window.SHOP,$=id=>document.getElementById(id);
+document.title=S.name+"｜初めての方へ";
+$("name").textContent=S.name;$("area").textContent=S.area;$("hours").textContent="営業 "+S.hours;
+$("cTitle").textContent=S.coupon.title;$("cDetail").textContent=S.coupon.detail;
+$("perks").innerHTML=S.perks.map(p=>"<span>✔ "+p+"</span>").join("");
+$("event").textContent="🎉 "+S.today.event;
+$("cast").innerHTML="<span>本日の出勤</span>"+S.today.cast.map(c=>"<span>"+c+"</span>").join("");
+$("prices").innerHTML=S.prices.map(p=>`<div class="row"><div>${p.label}<small>${p.note}</small></div><b>${p.price}</b></div>`).join("");
+$("priceNote").textContent=S.priceNote;
+$("age").textContent=S.minAge+"歳以上の方のみご入店いただけます。確認のため身分証をご提示いただく場合があります。";
+$("addr").textContent=S.address;$("map").href=S.mapUrl;$("tel").href="tel:"+S.tel;$("tel").textContent="📞 "+S.tel;
+$("legal").textContent=S.minAge+"歳未満の方のご入店・飲酒はお断りします。飲酒運転は法律で禁止されています。";
+function go(a,url,ev){a.href=url;a.addEventListener("click",()=>GB.log(ev))}
+go($("line"),S.lineUrl,"line_click");go($("ig"),S.instagramUrl,"ig_click");$("tel").addEventListener("click",()=>GB.log("tel_click"));$("map").addEventListener("click",()=>GB.log("map_click"));
+// 本日の日付と秒が動く時計を表示（スクショ使い回し防止）
+setInterval(()=>{$("clock").textContent=new Date().toLocaleString("ja-JP")},1000);
+// 利用済み管理（端末内）
+const UK="gb_coupon_used";
+function render(){const u=localStorage.getItem(UK);if(u){$("coupon").classList.add("used");$("useBtn").textContent="利用済み（"+new Date(+u).toLocaleDateString("ja-JP")+"）";$("useBtn").disabled=true}}
+$("useBtn").addEventListener("click",()=>{const p=prompt("スタッフ確認用の暗証番号");if(p===null)return;if(p===S.coupon.staffPin){localStorage.setItem(UK,Date.now());GB.log("coupon_used");render()}else alert("暗証番号が違います")});
+render();
+</script></body></html>
